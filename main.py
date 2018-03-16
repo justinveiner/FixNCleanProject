@@ -23,17 +23,23 @@ class Group:
 
     def __len__(self):
         return len(self.members)
+    
+    def __add__(self, otherGroup):
+        newGroup = Group(self.members + otherGroup.members, self.day1, 4)
+        return newGroup
 
-
+"""
 # File #
 
 #vFile = open("text.txt")
-data = []
+#data = []
 
 #for line in vFile:
     #data.append(line.strip('\n').split('\t'))
 
 #data.remove(data[0])
+
+
 
 print(data)
 
@@ -59,10 +65,7 @@ for i in range(65,86):
     print(group.members[0].name)
 
 
-
-
-
-
+"""
 
 
 
