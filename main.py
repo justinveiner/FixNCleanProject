@@ -11,8 +11,8 @@ class Volunteer:
 
 
 class Group:
-    def __init__(self, member1, member2, member3, member4, day1, day2):
-        self.members = [member1, member2, member3, member4]
+    def __init__(self, members, day1, day2):
+        self.members = members
         self.day1 = day1
         self.day2 = day2
         self.allergies = []
