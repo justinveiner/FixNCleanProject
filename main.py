@@ -1,5 +1,5 @@
 # Classes #
-
+import openpyxl
 
 class Volunteer:
     def __init__(self, name, email, phone, contactMethod, allergies):
@@ -27,15 +27,44 @@ class Group:
 
 # File #
 
-vFile = open("text.txt")
+#vFile = open("text.txt")
 data = []
 
-for line in vFile:
-    data.append(line.strip('\n').split('\t'))
+#for line in vFile:
+    #data.append(line.strip('\n').split('\t'))
 
-data.remove(data[0])
+#data.remove(data[0])
 
 print(data)
+
+wb = openpyxl.load_workbook("Copy-of-Volunteer-list-example.xlsx")
+sheet = wb["Sheet1"]
+cols = ["A","B","C","D"]
+
+
+
+row = 2
+
+for i in range(65,86):
+    row = chr(i)
+    names = []
+    for j in range(2,15,3):
+
+        name = sheet[row+str(j)].value
+        email = sheet[row+str(j+1)].value
+        vol = Volunteer(name,email,'','',[]) #placeholders, no contact info or phone number present
+        names.append(vol)
+    group = Group(names,sheet[row+'15'].value,sheet[row+'16'].value)
+
+    print(group.members[0].name)
+
+
+
+
+
+
+
+
 
 
 

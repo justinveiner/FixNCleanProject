@@ -13,11 +13,13 @@ for i in range(65,86):
     row = chr(i)
     names = []
     for j in range(2,15,3):
-        name = sheet[row+j].value
-        email = sheet[row+j+1].value
+
+        name = sheet[row+str(j)].value
+        email = sheet[row+str(j+1)].value
         vol = Volunteer(name,email,'','','') #placeholders, no contact info or phone number present
         names.append(vol)
-    group = Group(names,sheet[row+19].value,sheet[row+15].value,sheet[row+16].value)
+    group = Group(names,sheet[row+'19'].value,sheet[row+'15'].value,sheet[row+'16'].value)
+    print(group.names)
 
 
 
