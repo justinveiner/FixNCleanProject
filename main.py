@@ -1,5 +1,5 @@
 # Classes #
-import openpyxl
+import openpyxl, xlsxwriter
 
 class Volunteer:
     def __init__(self, name, email, phone, contactMethod, allergies):
@@ -28,6 +28,16 @@ class Group:
         newGroup = Group(self.members + otherGroup.members, self.day1, 4)
         return newGroup
 
+class Client:
+    def __init__(self, name, address, email, phone, allergies, timeslot):
+        self.name = name
+        self.address = address
+        self.email = email
+        self.phone = phone
+        self.allergies = allergies
+        self.timeslot = timeslot
+
+
 # FILE READ #
 
 wb = openpyxl.load_workbook("Copy-of-Volunteer-list-example.xlsx")
@@ -52,8 +62,43 @@ for row in range(2,112):
             names.append(vol)
     allGroups.append(Group(names,'',''))
 
+
+
+volDict = {}
+clientDict = {}
+
+
+data=[]
+
+
 for group in allGroups:
-    group
+    team = []
+    for member in group.members:
+       team.append(member.name)
+    data.append(team)
+
+print(data)
+book = xlsxwriter.Workbook("Testfile.xlsx")
+sheet = book.add_worksheet()
+
+
+row = 1
+col = 0
+headers = ["Team","Saturday Morning","Client","Saturday Afternoon","Client","Sunday Morning","Client","Sunday Afternoon","Client"]
+
+
+
+
+for i in range(len(headers)):
+    sheet.write(0,i,headers[i])
+
+
+
+
+
+book.close()
+
+
 
 
 
