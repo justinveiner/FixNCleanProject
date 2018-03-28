@@ -1,6 +1,7 @@
 
 import openpyxl
 import os
+import xlsxwriter
 
 # Classes #
 
@@ -190,3 +191,71 @@ for key in masterDict.keys():
 # close work books
 vWorkbook.close()
 cWorkbook.close()
+data= ['Saturday AM','Saturday PM','Sunday AM','Sunday PM']
+wBook = xlsxwriter.Workbook("schedule.xlsx")
+sheet = wBook.add_worksheet()
+x = 0
+for i in range(0,12,3):
+    sheet.write(0,i,data[x])
+    sheet.write(0,i+1,'Volunteers')
+    sheet.write(0,i+2,'Clients')
+    x+=1
+
+row1 =1
+row2=1
+row3=1
+row4=1
+for client in clients:
+    if client == 1:
+        for person in clients[1]:
+            namelist = ""
+            for item in masterDict:
+                for i in range(len(masterDict[person].members)):
+                    if (i!=len(masterDict[person].members)-1):
+                        namelist += masterDict[person].members[i].name + ", "
+                    else:
+                        namelist += masterDict[person].members[i].name
+            sheet.write(row1,1,namelist)
+            sheet.write(row1,2,person.name)
+            row1+=1
+    if client ==2:
+
+        for person in clients[2]:
+            namelist = ""
+            for item in masterDict:
+                for i in range(len(masterDict[person].members)):
+                    if (i != len(masterDict[person].members) - 1):
+                        namelist += masterDict[person].members[i].name + ", "
+                    else:
+                        namelist += masterDict[person].members[i].name
+            sheet.write(row2, 4, namelist)
+            sheet.write(row2, 5, person.name)
+            row2+=1
+    if client == 3:
+        for person in clients[3]:
+            namelist = ""
+            for item in masterDict:
+                for i in range(len(masterDict[person].members)):
+                    if (i != len(masterDict[person].members) - 1):
+                        namelist += masterDict[person].members[i].name + ", "
+                    else:
+                        namelist += masterDict[person].members[i].name
+            sheet.write(row3, 7, namelist)
+            sheet.write(row3, 8, person.name)
+            row3+=1
+    if client == 4:
+        for person in clients[4]:
+            namelist = ""
+            for item in masterDict:
+                for i in range(len(masterDict[person].members)):
+                    if (i != len(masterDict[person].members) - 1):
+                        namelist += masterDict[person].members[i].name + ", "
+                    else:
+                        namelist += masterDict[person].members[i].name
+            sheet.write(row4, 10, namelist)
+            sheet.write(row4, 11, person.name)
+            row4+=1
+
+
+wBook.close()
+
