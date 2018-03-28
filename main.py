@@ -1,4 +1,4 @@
-
+# Imported libraries #
 import openpyxl
 import os
 
@@ -65,9 +65,7 @@ def surplus(dict1, dict2, clientDict):
         if tLen <= shortest:
             shortest = tLen
             best = key
-
     return best
-
 
 def eliminate(volunteer, vDict):
     # This function removes a volunteer from the dictionary
@@ -84,14 +82,8 @@ def sFormat(string):
         if string[-5:] == ".xlsx":
             if os.path.isfile(string):
                 return string
-    return sFormat(input("Enter the name of your file, with the file type(i.e. \"example.xlsx\"):"))
+    return sFormat(input("Error: Please re-enter the name of your file, with the file type(i.e. \"example.xlsx\"):"))
     # Need to edit the phrase
-
-
-
-
-
-
 
 # VARIABLES #
 # Dictionaries
@@ -105,8 +97,8 @@ clients         = {1: [], 2: [], 3: [], 4: []}
 
 print("this function takes excel file and makes another excel file")
 
-#wFile = sFormat(input("Enter the name of your volunteer file, with the file type(i.e. \"example.xlsx\"):"))
-#cFile = sFormat(input("Enter the name of your client file, with the file type(i.e. \"example.xlsx\"):"))
+wFile = sFormat(input("Enter the name of your volunteer file, with the file type(i.e. \"example.xlsx\"):"))
+cFile = sFormat(input("Enter the name of your client file, with the file type(i.e. \"example.xlsx\"):"))
 
 # opens the volunteer workbook
 vWorkbook = openpyxl.load_workbook("vex.xlsx")
@@ -177,13 +169,17 @@ for loops in range(4):
         index += 1
 
     volAssign = 0
+
+    # takes the clients from that day and assigns volunteers
     for client in clients[start]:
         masterDict[client] = vList[volAssign]
         volAssign += 1
+        # volunteers that are officially signed are deleted from all other lists
         for volunteer in vList[volAssign].members:
             eliminate(volunteer, firstChoice)
             eliminate(volunteer, secondChoice)
 
+# prints everything into a certain format
 for key in masterDict.keys():
     print(key.address, end=":\t\t\t")
     for i in masterDict[key].members:
