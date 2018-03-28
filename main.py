@@ -1,7 +1,6 @@
-# Imported libraries #
+
 import openpyxl
 import os
-
 
 # Classes #
 
@@ -65,7 +64,9 @@ def surplus(dict1, dict2, clientDict):
         if tLen <= shortest:
             shortest = tLen
             best = key
+
     return best
+
 
 def eliminate(volunteer, vDict):
     # This function removes a volunteer from the dictionary
@@ -101,11 +102,11 @@ wFile = sFormat(input("Enter the name of your volunteer file, with the file type
 cFile = sFormat(input("Enter the name of your client file, with the file type(i.e. \"example.xlsx\"):"))
 
 # opens the volunteer workbook
-vWorkbook = openpyxl.load_workbook("vex.xlsx")
+vWorkbook = openpyxl.load_workbook(wFile)
 vSheet = vWorkbook["Sheet1"]
 
 # opens the client workbook
-cWorkbook = openpyxl.load_workbook("cex.xlsx")
+cWorkbook = openpyxl.load_workbook(cFile)
 cSheet = cWorkbook["Sheet1"]
 
 # Reads the file into the first and second choice dictionaries
