@@ -31,8 +31,11 @@ class Group:
         return len(self.members)
     
     def __add__(self, otherGroup):
-        newGroup = Group(self.members + otherGroup.members, self.day1, 4)
+        newGroup = Group(self.members + otherGroup.members, self.day1, 5)
         return newGroup
+
+    def has_member(self, volunteer):
+        return volunteer in self.members
 
 
 class Client:
@@ -69,7 +72,9 @@ def surplus(dict1, dict2, clientDict):
 def eliminate(volunteer, vDict):
     # This function removes a volunteer from the dictionary
     for key in vDict.keys():
-        vDict[key].remove(volunteer)
+        for group in vDict[key]:
+            if group.has_member(volunteer):
+                vDict[key].remove(group)
     return vDict
 
 
@@ -81,6 +86,8 @@ def sFormat(string):
                 return string
     return sFormat(input("Enter the name of your file, with the file type(i.e. \"example.xlsx\"):"))
     # Need to edit the phrase
+
+
 
 
 
@@ -98,15 +105,15 @@ clients         = {1: [], 2: [], 3: [], 4: []}
 
 print("this function takes excel file and makes another excel file")
 
-wFile = sFormat(input("Enter the name of your volunteer file, with the file type(i.e. \"example.xlsx\"):"))
-cFile = sFormat(input("Enter the name of your client file, with the file type(i.e. \"example.xlsx\"):"))
+#wFile = sFormat(input("Enter the name of your volunteer file, with the file type(i.e. \"example.xlsx\"):"))
+#cFile = sFormat(input("Enter the name of your client file, with the file type(i.e. \"example.xlsx\"):"))
 
 # opens the volunteer workbook
-vWorkbook = openpyxl.load_workbook(wFile)
+vWorkbook = openpyxl.load_workbook("vex.xlsx")
 vSheet = vWorkbook["Sheet1"]
 
 # opens the client workbook
-cWorkbook = openpyxl.load_workbook(cFile)
+cWorkbook = openpyxl.load_workbook("cex.xlsx")
 cSheet = cWorkbook["Sheet1"]
 
 # Reads the file into the first and second choice dictionaries
@@ -146,20 +153,43 @@ for row in range(2,22):
     # appends client to the list on their chosen date
     clients[newClient.date].append(newClient)
 
-for loops in range(len(firstChoice)):
+
+masterDict = {}
+
+# main sorting algorithm, repeated 4 times to eliminate all options
+for loops in range(4):
     start = surplus(firstChoice, secondChoice, clients)
+    vList = firstChoice.pop(start) + secondChoice.pop(start)
+    index = 0
 
+    for group in vList:
+        destroy = []
+        if len(vList)-1 != index:
+            if len(group) < 5:
+                for add in range(index + 1, len(vList)-1):
+                    print(len(vList)-1, add)
+                    if len(vList[add]) + len(group) <= 5:
+                        vList[index] = group + vList[add]
+                        destroy.append(add)
+                # deletes the indexes starting from right to left
+                for delete in reversed(destroy):
+                    del(vList[delete])
+        index += 1
 
+    volAssign = 0
+    for client in clients[start]:
+        masterDict[client] = vList[volAssign]
+        volAssign += 1
+        for volunteer in vList[volAssign].members:
+            eliminate(volunteer, firstChoice)
+            eliminate(volunteer, secondChoice)
+
+for key in masterDict.keys():
+    print(key.address, end=":\t\t\t")
+    for i in masterDict[key].members:
+        print(i.name, end='\t\t')
+    print()
 
 # close work books
 vWorkbook.close()
 cWorkbook.close()
-
-
-
-
-
-
-
-
-
