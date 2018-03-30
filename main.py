@@ -3,8 +3,6 @@ import openpyxl
 import os
 import xlsxwriter
 
-
-
 # Classes #
 
 
@@ -122,12 +120,17 @@ for row in range(2, 112):
     names = []
     for letters in range(1, 15, 3):
         j = 65 + letters
+        n = vSheet[chr(j)+str(row)].value
+        if n == None:
+            break
         name = vSheet[chr(j)+str(row)].value
+
         email = vSheet[chr(j+1)+str(row)].value
 
 
         if name != None:
             vol = Volunteer(name, email, '', '', [])
+            print(vol.email)
             # placeholders, no contact info or phone number present
             names.append(vol)
 
@@ -255,10 +258,13 @@ for i in range(1,5):
         sheet2.write(row, 2, client.allergies)
         row += 1
 
+
+
 for i in range(1,5):
     for client in clients[i]:
         for j in range(len(masterDict[client].members)):
             name = masterDict[client].members[j].name.split(" ")[0]
+            #receivers = masterDict[client].members[j].email
             receivers = masterDict[client].members[j].email
             address = client.address
             task = client.task
@@ -269,12 +275,12 @@ for i in range(1,5):
             Hi %s,
             This is a message notifying you of your Fix 'N' Clean Volunteer Assignment.
             You will be volunteering on %s at %s for %s.
-            Here is what your client wants you to do:
+            Here is what your client wants you to do\n:
             %s
             Have a good day,
             Fix 'N' Clean Management Team
-            """
-            %(receivers, masterDict[client].members[j], data[i - 1], client.address, client.name, client.task)
+            """  %(masterDict[client].members[j].email,masterDict[client].members[j].name, data[i - 1], client.address, client.name, client.task)
+
             # AUTHENTICATE
             try:
                 smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
@@ -286,7 +292,6 @@ for i in range(1,5):
                 smtpObj.close()
             except:
                 print("Error: unable to send email")
-
 
 wBook.close()
 
