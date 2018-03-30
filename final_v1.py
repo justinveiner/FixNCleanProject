@@ -59,25 +59,28 @@ def eliminate(volunteer, vDict):
 
 def help():
     # This function prints basic help and tips
-    print("----------HELP----------\n"
-          "1. Ensure your inputs lack spaces.\n"
+    print("-----------------HELP-----------------\n"
+          "1. Ensure that your inputs do not contain unnecessary spaces.\n"
           "2. Inputs are case sensitive. Ensure that you are typing inputs with the correct case.\n"
           "3. Ensure that you type the file name correctly.\n"
-          "4. Ensure that the volunteer and client information files are in the specified location.\n")
+          "4. Ensure that the volunteer and client information files are in the specified location.\n"
+          "5. Ensure that 'Allow Less Secure Apps' in your Gmail account settings is turned on.\n")
     x = input("--PRESS <Enter> TO CONTINUE--\n\n")
 
 
 def menu():
     # This code runs the main menu
-    print("FIX 'N' CLEAN VOLUNTEER ASSIGNMENT PROGRAM")
+    print("----------------------------------------------------------------")
+    print("|          FIX 'N' CLEAN VOLUNTEER ASSIGNMENT PROGRAM          |")
+    print("----------------------------------------------------------------")
+
     menu_run = True    # Variable Controlling the input check loop
 
     # This loop runs if the user's input is invalid
     while menu_run == True:
 
-        menu_input = input("----------------------------------------------------------------\n"
-                            "Type in the number related to the function you would like to run\n"
-                            "1: Volunteer assignment\n2: Automated Email\n3: Help\n4: Quit\n\n->")
+        menu_input = input("Type in the number related to the function you would like to run\n"
+                           "1: Volunteer assignment\n2: Automated Email\n3: Help\n4: Quit\n\n->")
 
         if (menu_input != "1") and (menu_input != "2") and (menu_input != "3") and (menu_input != "4"):
             print("Invalid input. Please type 1, 2, 3, or 4 depending on which function you would like to access.\n")
