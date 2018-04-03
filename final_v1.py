@@ -302,7 +302,7 @@ while (pRun == True):
                     receivers = masterDict[client].members[j].email
                     address = client.address
                     task = client.task
-                    message = """From: Fix 'N' Clean Team 'justin.veiner@gmail.com'
+                    message = """From: Fix 'N' Clean Team %s
                     To: %s
                     Subject: Fix 'N' Clean Volunteer Assignment
 
@@ -313,7 +313,7 @@ while (pRun == True):
                     %s
                     Have a good day,
                     Fix 'N' Clean Management Team
-                    """ % (masterDict[client].members[j].email, masterDict[client].members[j].name, data[i - 1],
+                    """ % (sender,masterDict[client].members[j].email, masterDict[client].members[j].name, data[i - 1],
                            client.address, client.name, client.task)
 
                     # AUTHENTICATE
@@ -327,7 +327,7 @@ while (pRun == True):
                         smtpObj.close()
                     except:
                         print("Error: unable to send email")
-        print("hi")
+
 
     elif (menu_choice == "3"):
         # Runs the Help function
