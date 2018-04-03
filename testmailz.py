@@ -3,10 +3,11 @@ import smtplib
 sender = input("\nPlease enter your Gmail email address\n->")
 username = sender
 password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored)\n->")
-receivers = 'PASTE ADDRESS'
 
-message = """From: From Person 'justin.veiner@gmail.com'
-To: To Person 16edq@queensu.ca
+receivers = 'jav14@me.com'
+
+message = """From: Fix 'N' Clean Team 'justin.veiner@gmail.com'
+To: To Person 16jav1@queensu.ca
 Subject: SMTP e-mail test
 
 This is a test e-mail message.

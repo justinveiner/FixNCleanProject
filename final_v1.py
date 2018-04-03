@@ -39,12 +39,12 @@ class Group:
 
 
 class Client:
-    def __init__(self, name, date, address, allergies):
+    def __init__(self, name, date, address, allergies,task):
         self.name = name
         self.address = address
         self.allergies = allergies
         self.date = date
-
+        self.task = task
 
 # Functions #
 
@@ -268,7 +268,7 @@ while (pRun == True):
                         namelist += masterDict[client].members[j].name
                 # write volunteer names and client name to sheet, increment row
                 allergyCheck = False
-                if masterDict[client].allergies.length > 0:
+                if len(masterDict[client].allergies) > 0:
                     allergyCheck = True
                 abold = bold = wBook.add_format({'bold': allergyCheck})
                 sheet.write(cells[i - 1][0], cells[i - 1][1], namelist, abold)
@@ -338,5 +338,5 @@ while (pRun == True):
         pRun = False
 
 # Closes the program once the main program loop ends
-wBook.close()
+
 exit(0)
