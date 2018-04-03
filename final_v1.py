@@ -243,6 +243,7 @@ while (pRun == True):
         # x keeps track of which header to write
         x = 0
         bold = wBook.add_format({'bold': True})
+
         # adds headers to first row
         for i in range(0, 12, 3):
             sheet.write(0, i, data[x], bold)
@@ -266,8 +267,12 @@ while (pRun == True):
                     else:
                         namelist += masterDict[client].members[j].name
                 # write volunteer names and client name to sheet, increment row
-                sheet.write(cells[i - 1][0], cells[i - 1][1], namelist)
-                sheet.write(cells[i - 1][0], cells[i - 1][2], client.name)
+                allergyCheck = False
+                if masterDict[client].allergies.length > 0:
+                    allergyCheck = True
+                abold = bold = wBook.add_format({'bold': allergyCheck})
+                sheet.write(cells[i - 1][0], cells[i - 1][1], namelist, abold)
+                sheet.write(cells[i - 1][0], cells[i - 1][2], client.name, abold)
                 cells[i - 1][0] += 1
 
         clientHeaders = ['Client Name', 'Address', 'Task', 'Additional Info']
@@ -286,6 +291,42 @@ while (pRun == True):
 
     elif (menu_choice == "2"):
         # Runs the Email function
+        sender = input("\nPlease enter your Gmail email address\n->")
+        username = sender
+        password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored)\n->")
+        for i in range(1, 5):
+            for client in clients[i]:
+                for j in range(len(masterDict[client].members)):
+                    name = masterDict[client].members[j].name.split(" ")[0]
+                    # receivers = masterDict[client].members[j].email
+                    receivers = masterDict[client].members[j].email
+                    address = client.address
+                    task = client.task
+                    message = """From: Fix 'N' Clean Team 'justin.veiner@gmail.com'
+                    To: %s
+                    Subject: Fix 'N' Clean Volunteer Assignment
+
+                    Hi %s,
+                    This is a message notifying you of your Fix 'N' Clean Volunteer Assignment.
+                    You will be volunteering on %s at %s for %s.
+                    Here is what your client wants you to do\n:
+                    %s
+                    Have a good day,
+                    Fix 'N' Clean Management Team
+                    """ % (masterDict[client].members[j].email, masterDict[client].members[j].name, data[i - 1],
+                           client.address, client.name, client.task)
+
+                    # AUTHENTICATE
+                    try:
+                        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+                        smtpObj.ehlo()
+                        smtpObj.starttls()
+                        smtpObj.login(username, password)
+                        smtpObj.sendmail(sender, receivers, message)
+                        print("Successfully sent email")
+                        smtpObj.close()
+                    except:
+                        print("Error: unable to send email")
         print("hi")
 
     elif (menu_choice == "3"):
@@ -297,4 +338,5 @@ while (pRun == True):
         pRun = False
 
 # Closes the program once the main program loop ends
+wBook.close()
 exit(0)
