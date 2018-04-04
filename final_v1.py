@@ -310,6 +310,8 @@ while (pRun == True):
 
 
     elif (menu_choice == '2'):
+        # This choice runs the email function
+
         wb = openpyxl.load_workbook("schedule.xlsx")
         sheet = wb["Sheet1"]
         newDict = {}
@@ -337,9 +339,9 @@ while (pRun == True):
                 row += 1
 
         wb.close()
-        sender = input("\nPlease enter your Gmail email address\n->")
+        sender = input("\nPlease enter your Gmail email address:")
         username = sender
-        password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored)\n->")
+        password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored):")
         for i in range(1, 5):
             for client in clients[i]:
                 for j in range(len(newDict[client].members)):
@@ -352,7 +354,6 @@ while (pRun == True):
                     message = """From: Fix 'N' Clean Team %s
                            To: %s
                            Subject: Fix 'N' Clean Volunteer Assignment
-
                            Hi %s,
                            This is a message notifying you of your Fix 'N' Clean Volunteer Assignment.
                            You will be volunteering on %s at %s for %s.
@@ -370,22 +371,25 @@ while (pRun == True):
                         smtpObj.ehlo()
                         smtpObj.starttls()
                         smtpObj.login(username, password)
+                        print("Connected to server. Sending emails...")
                         smtpObj.sendmail(sender, receivers, message)
                         # print("Successfully sent email")
-                        x += 1
+                        #x += 1
+                        #Test code
                         smtpObj.close()
                     except:
                         print("Error: unable to send email")
                         print(masterDict[client].members[j].name)
+                    print("Email sending complete.")
 
-        print(x)
+        #print(x)
 
     elif (menu_choice == "3"):
         # Runs the Help function
         help()
 
     elif (menu_choice == "4"):
-        # Ends the progrm loop to close the program
+        # Ends the program loop to close the program
         pRun = False
 
 
