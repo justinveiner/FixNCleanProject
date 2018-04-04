@@ -67,6 +67,21 @@ def help():
           "5. Ensure that 'Allow Less Secure Apps' in your Gmail account settings is turned on.\n")
     x = input("--PRESS <Enter> TO CONTINUE--\n\n")
 
+def getClient(dict, name):
+    for i in range(1,5):
+        for client in dict[i]:
+            if client.name == name:
+                return client
+
+def getVols(dict, group):
+    for key in dict.keys():
+        names = []
+        for member in dict[key].members:
+            names.append(member.name)
+        if (group == names):
+            return dict[key]
+
+
 
 def menu():
     # This code runs the main menu
@@ -82,7 +97,7 @@ def menu():
         menu_input = input("Type in the number related to the function you would like to run\n"
                            "1: Volunteer assignment\n2: Automated Email\n3: Help\n4: Quit\n\n->")
 
-        if (menu_input != "1") and (menu_input != "2") and (menu_input != "3") and (menu_input != "4"):
+        if (menu_input != "1") and (menu_input != "2") and (menu_input != "3") and (menu_input != "4") and (menu_input!="5"):
             print("Invalid input. Please type 1, 2, 3, or 4 depending on which function you would like to access.\n")
         else:
             menu_run = False
@@ -229,6 +244,10 @@ while (pRun == True):
                 print(i.name, end='\t\t')
             print()
 
+
+
+
+
         # close work books
         vWorkbook.close()
         cWorkbook.close()
@@ -289,32 +308,61 @@ while (pRun == True):
 
         wBook.close()
 
-    elif (menu_choice == "2"):
-        # Runs the Email function
+
+    elif (menu_choice == '2'):
+        wb = openpyxl.load_workbook("schedule.xlsx")
+        sheet = wb["Sheet1"]
+        newDict = {}
+        vCols = {'B': 0, 'E': 0, 'H': 0, 'K': 0}
+        cCols = {'C': 0, 'F': 0, 'I': 0, 'L': 0}
+        for col in cCols.keys():
+            row = 2
+            empty = False
+            while not empty:
+                if sheet[col + str(row)].value != None:
+                    row += 1
+                    cCols[col] += 1
+                else:
+                    empty = True
+
+        for col in cCols.keys():
+            x = 1
+            row = 2
+            for i in range(cCols[col]):
+                clientName = sheet[col + str(row)].value
+                client = getClient(clients, clientName)
+                vols = sheet[chr(ord(col) - 1) + str(row)].value.split(", ")
+                group = getVols(masterDict, vols)
+                newDict[client] = group
+                row += 1
+
+        wb.close()
         sender = input("\nPlease enter your Gmail email address\n->")
         username = sender
         password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored)\n->")
         for i in range(1, 5):
             for client in clients[i]:
-                for j in range(len(masterDict[client].members)):
-                    name = masterDict[client].members[j].name.split(" ")[0]
+                for j in range(len(newDict[client].members)):
+                    name = newDict[client].members[j].name.split(" ")[0]
+
                     # receivers = masterDict[client].members[j].email
                     receivers = masterDict[client].members[j].email
                     address = client.address
                     task = client.task
                     message = """From: Fix 'N' Clean Team %s
-                    To: %s
-                    Subject: Fix 'N' Clean Volunteer Assignment
+                           To: %s
+                           Subject: Fix 'N' Clean Volunteer Assignment
 
-                    Hi %s,
-                    This is a message notifying you of your Fix 'N' Clean Volunteer Assignment.
-                    You will be volunteering on %s at %s for %s.
-                    Here is what your client wants you to do\n:
-                    %s
-                    Have a good day,
-                    Fix 'N' Clean Management Team
-                    """ % (sender,masterDict[client].members[j].email, masterDict[client].members[j].name, data[i - 1],
-                           client.address, client.name, client.task)
+                           Hi %s,
+                           This is a message notifying you of your Fix 'N' Clean Volunteer Assignment.
+                           You will be volunteering on %s at %s for %s.
+                           Here is what your client wants you to do\n:
+                           %s
+                           Have a good day,
+                           Fix 'N' Clean Management Team
+                           """ % (
+                    sender, newDict[client].members[j].email, newDict[client].members[j].name, data[i - 1],
+                    client.address, client.name, client.task)
 
                     # AUTHENTICATE
                     try:
@@ -323,11 +371,14 @@ while (pRun == True):
                         smtpObj.starttls()
                         smtpObj.login(username, password)
                         smtpObj.sendmail(sender, receivers, message)
-                        print("Successfully sent email")
+                        # print("Successfully sent email")
+                        x += 1
                         smtpObj.close()
                     except:
                         print("Error: unable to send email")
+                        print(masterDict[client].members[j].name)
 
+        print(x)
 
     elif (menu_choice == "3"):
         # Runs the Help function
@@ -336,6 +387,10 @@ while (pRun == True):
     elif (menu_choice == "4"):
         # Ends the progrm loop to close the program
         pRun = False
+
+
+
+
 
 # Closes the program once the main program loop ends
 
