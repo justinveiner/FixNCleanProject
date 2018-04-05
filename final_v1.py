@@ -259,6 +259,7 @@ while (pRun == True):
         sheet = wBook.add_worksheet()
         # sheet with client info
         sheet2 = wBook.add_worksheet()
+
         # x keeps track of which header to write
         x = 0
         bold = wBook.add_format({'bold': True})
@@ -311,8 +312,15 @@ while (pRun == True):
 
     elif (menu_choice == '2'):
         wb = openpyxl.load_workbook("schedule.xlsx")
+        file = xlsxwriter.Workbook("email_failures.xlsx")
+        filesheet = file.add_worksheet()
+        fileheaders = ["E-mail Address","Name","Time","Location","Client","Task"]
+        for i in range(len(fileheaders)):
+            filesheet.write(0,i,fileheaders[i],bold)
         sheet = wb["Sheet1"]
         newDict = {}
+        fails = []
+        filecol = 1
         vCols = {'B': 0, 'E': 0, 'H': 0, 'K': 0}
         cCols = {'C': 0, 'F': 0, 'I': 0, 'L': 0}
         for col in cCols.keys():
@@ -340,6 +348,7 @@ while (pRun == True):
         sender = input("\nPlease enter your Gmail email address\n->")
         username = sender
         password = input("\nPlease enter the password to your Gmail account (this information will not be permanently saved/stored)\n->")
+
         for i in range(1, 5):
             for client in clients[i]:
                 for j in range(len(newDict[client].members)):
@@ -376,7 +385,14 @@ while (pRun == True):
                         smtpObj.close()
                     except:
                         print("Error: unable to send email")
-                        print(masterDict[client].members[j].name)
+                        missed = [sender, newDict[client].members[j].email, newDict[client].members[j].name, data[i - 1],
+                    client.address, client.name, client.task]
+                        fails.append(missed)
+                        for k in range(len(missed)):
+                            filesheet.write(filecol,k,missed[k])
+                        filecol += 1
+
+
 
         print(x)
 
