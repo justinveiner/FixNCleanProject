@@ -160,14 +160,15 @@ while (pRun == True):
 
         # opens the volunteer workbook
         vWorkbook = openpyxl.load_workbook(wFile)
-        vSheet = vWorkbook["Sheet1"]
+        vSheet = vWorkbook["Fix 'N' Clean"]
 
         # opens the client workbook
         cWorkbook = openpyxl.load_workbook(cFile)
         cSheet = cWorkbook["Sheet1"]
 
         # Reads the file into the first and second choice dictionaries
-        for row in range(2, 112):
+
+        for row in range(2, len(vSheet["A"])):
             names = []
             for letters in range(1, 15, 3):
                 j = 65 + letters
@@ -180,8 +181,10 @@ while (pRun == True):
                     names.append(vol)
 
             # Accesses the first and second choice in the table
+
             fChoice = int(vSheet[chr(65 + 15) + str(row)].value)
             sChoice = int(vSheet[chr(65 + 16) + str(row)].value)
+
 
             # Creates the group
             newGroup = Group(names, fChoice, sChoice)
@@ -193,7 +196,7 @@ while (pRun == True):
             if newGroup.day2 != 5:
                 secondChoice[newGroup.day2].append(newGroup)
 
-        for row in range(2, 22):
+        for row in range(2, len(cSheet["A"])):
             # collects all data from the workbook and creates a client
             name = cSheet['A' + str(row)].value
             date = cSheet['G' + str(row)].value
@@ -311,12 +314,14 @@ while (pRun == True):
 
 
     elif (menu_choice == '2'):
+
         wb = openpyxl.load_workbook("schedule.xlsx")
         file = xlsxwriter.Workbook("email_failures.xlsx")
+        fbold = file.add_format({'bold': True})
         filesheet = file.add_worksheet()
         fileheaders = ["E-mail Address","Name","Time","Location","Client","Task"]
         for i in range(len(fileheaders)):
-            filesheet.write(0,i,fileheaders[i],bold)
+            filesheet.write(0,i,fileheaders[i],fbold)
         sheet = wb["Sheet1"]
         newDict = {}
         fails = []
@@ -385,7 +390,7 @@ while (pRun == True):
                         smtpObj.close()
                     except:
                         print("Error: unable to send email")
-                        missed = [sender, newDict[client].members[j].email, newDict[client].members[j].name, data[i - 1],
+                        missed = [newDict[client].members[j].email, newDict[client].members[j].name, newDict[client].members[j].name, data[i - 1],
                     client.address, client.name, client.task]
                         fails.append(missed)
                         for k in range(len(missed)):
@@ -395,6 +400,7 @@ while (pRun == True):
 
 
         print(x)
+        file.close()
 
     elif (menu_choice == "3"):
         # Runs the Help function
