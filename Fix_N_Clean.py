@@ -64,7 +64,9 @@ def help():
           "2. Inputs are case sensitive. Ensure that you are typing inputs with the correct case.\n"
           "3. Ensure that you type the file name correctly.\n"
           "4. Ensure that the volunteer and client information files are in the specified location.\n"
-          "5. Ensure that 'Allow Less Secure Apps' in your Gmail account settings is turned on.\n")
+          "5. Ensure that 'Allow Less Secure Apps' in your Gmail account settings is turned on.\n"
+          "5. Ensure that all Excel sheets are in the required format. See the Readme for specifics.\n"
+          "7. Refer to the Readme file included with this program for additional help and information.\n")
     x = input("--PRESS <Enter> TO CONTINUE--\n\n")
 
 def getClient(dict, name):
