@@ -50,7 +50,10 @@
 
     NOTE: The data for both files must be in 'Sheet1'.
 
- 2. In your Gmail account settings "Allow less secure apps" must be 
+ 2. Both the volunteer and client Excel spreadsheets MUST be in the exact same 
+    folder as 'Fix_N_Clean.exe'.
+
+ 3. In your Gmail account settings "Allow less secure apps" must be 
     enabled to send emails using this program.
 
 
@@ -116,12 +119,17 @@
  in this program. Edits can be made to this spreadsheet. However, the general 
  formatting MUST stay the same, and the sheet the data is in must be 'Sheet1'.
 
+ In order to send emails, the program must have previously run the volunteer assignment
+ function in the same instance. This means the program cannot be closed between the
+ assignment and the emailing. Edits to 'schedule' may still be made, however.
+
  The program will ask for the sender's email address and password. This information
  is only stored temporarily, and is deleted every time the program is closed and
  reopened. After the necessary inputs, the program will automatically send emails.
  Once the process is complete, the user will be returned to the main menu.
 
- Be aware that the sent emails may be placed into the recipients' spam folders.
+ Be aware that the sent emails may be placed into the recipients' spam folders. 
+ Additionally, to send emails, the program must be left open
 
  NOTE: An Excel file called 'email_failures' may be created in the same folder as
        'Fix_N_Clean.exe'. This file contains the names of any volunteers to whom
@@ -135,6 +143,7 @@
 
  - Can only send emails from a Gmail account.
  - Each instance of the program can only assign volunteers once.
+ - Program must be kept open in order to use the email function.
 
 
  ------------
@@ -144,12 +153,6 @@
  - Attempting to assign volunteers more than once in one instance will crash the program. To sort a 
    second time in each instance of the program, close it and reopen it.
  - Sent emails may be placed into spam folders.
-
-
-
-
-
-
 
 
 
