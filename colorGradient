@@ -1,3 +1,5 @@
+var perc = ((avgSpeed - minSpeed)/(maxSpeed - minSpeed);
+
 function colorGradient(perc) {
  var r, g, b = 0;
   if (perc < 50) {
